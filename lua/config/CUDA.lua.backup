@@ -1,0 +1,15 @@
+-- in your LazyVim configuration file
+local lspconfig = require("lspconfig")
+
+lspconfig.clangd.setup({
+  filetypes = { "cuda", "cpp", "c", "objc", "objcpp" }, -- Add `cuda` if not included
+})
+
+-- Optionally, specify `.cu` files to be recognized as `cuda`
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = {"*.cu"},
+  callback = function()
+    vim.bo.filetype = "cuda"
+  end,
+})
+
