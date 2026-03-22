@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## New Device Setup
+
+Steps required when cloning on a new machine:
+
+1. **Install system dependencies (manual):** Neovim >= 0.9, `git`, `node`, `npm`, `ripgrep`, and a C compiler (`gcc` or `clang`)
+2. **Install Claude Code CLI (manual):** `npm i -g @anthropic-ai/claude-code` — required by claude-code.nvim
+3. **Clone repo:** `git clone https://github.com/LoganGeldenhuys/nvim.git ~/.config/nvim`
+4. **Launch Neovim (automated):** Run `nvim` — lazy.nvim bootstraps itself and installs all plugins and LSP servers automatically
+5. **Install tmux plugins (manual — requires keypress):** Inside a tmux session, press `<prefix>I` (`C-Space I`) to install TPM plugins
+
 ## Overview
 
 This is a [LazyVim](https://www.lazyvim.org/) Neovim configuration built on the lazy.nvim plugin manager. LazyVim provides sensible defaults; this repo contains only the customizations layered on top.
