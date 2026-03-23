@@ -4,7 +4,7 @@
 local wk = require("which-key")
 
 -- Resume telescope
-vim .keymap.set(
+vim.keymap.set(
   "n",
     "<leader>sx",
   require("telescope.builtin").resume,
