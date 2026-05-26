@@ -19,3 +19,14 @@ wk.add({
   }
 })
 
+-- AI dispatcher (opencode/claude switch). See lua/config/ai.lua.
+local ai = require("config.ai")
+wk.add({ { "<leader>j", group = "AI" } })
+
+vim.keymap.set("n",          "<leader>jj", ai.toggle,      { desc = "Toggle AI" })
+vim.keymap.set("n",          "<leader>jf", ai.focus,       { desc = "Focus AI" })
+vim.keymap.set({ "n", "x" }, "<leader>jk", ai.ask,         { desc = "Ask AI" })
+vim.keymap.set("x",          "<leader>js", ai.send_visual, { desc = "Send selection to AI" })
+vim.keymap.set("n",          "<leader>jp", ai.pick,        { desc = "Pick prompt/command" })
+vim.keymap.set("n",          "<leader>jx", ai.swap,        { desc = "Swap AI agent" })
+

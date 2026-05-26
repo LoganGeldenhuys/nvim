@@ -59,4 +59,52 @@ To add extras, either edit `lazyvim.json` directly or run `:LazyExtras` inside N
 
 ## AI Plugins
 
-- **claude-code.nvim** (`lua/plugins/claude-code.lua`) — Claude Code integration
+This config supports both OpenCode (`nickjvandyke/opencode.nvim`) and Claude
+Code (`coder/claudecode.nvim`) through a single `<leader>j*` keymap surface.
+A small dispatcher in `lua/config/ai.lua` routes each key to whichever plugin
+is currently active, based on `vim.g.ai_agent`.
+
+### Dispatcher (`lua/config/ai.lua`)
+
+`vim.g.ai_agent` is the source of truth. It defaults via this precedence:
+
+1. Existing in-session value (so `<leader>jx` swaps stick within nvim).
+2. `$AI_AGENT` env var inherited from tmux (so fresh nvims pick up the tmux
+   toggle).
+3. Fallback: `"opencode"`.
+
+### Keymaps
+
+All dispatcher keys live under `<leader>j` (see `lua/config/keymaps.lua`):
+
+| Key            | Action          | OpenCode call                | Claude call            |
+| -------------- | --------------- | ---------------------------- | ---------------------- |
+| `<leader>jj`   | Toggle AI       | `opencode.toggle()`          | `:ClaudeCode`          |
+| `<leader>jf`   | Focus AI        | `opencode.toggle()`          | `:ClaudeCodeFocus`     |
+| `<leader>jk`   | Ask AI          | `opencode.ask("@this: ")`    | `:ClaudeCodeFocus`     |
+| `<leader>js`   | Send selection (visual) | `opencode.prompt("@this ")` | `:ClaudeCodeSend`      |
+| `<leader>jp`   | Pick prompt/command | `opencode.select()`     | (warn — not supported) |
+| `<leader>jx`   | Swap AI agent   | flips `vim.g.ai_agent`       | flips `vim.g.ai_agent` |
+
+Claude-only diff keys (defined in `lua/plugins/claude-code.lua`):
+
+| Key          | Action            |
+| ------------ | ----------------- |
+| `<leader>ja` | Accept Claude diff (`:ClaudeCodeDiffAccept`) |
+| `<leader>jd` | Deny Claude diff (`:ClaudeCodeDiffDeny`)     |
+
+OpenCode uses Neovim's native `:diffpatch` flow for edit review. In the diff
+tab, use:
+
+- `da` — accept entire edit request
+- `dr` — reject entire edit request
+- `dp` / `do` — accept/reject only the hunk under cursor
+- `]c` / `[c` — navigate hunks
+- `q` — close
+
+### Plugins
+
+- `lua/plugins/opencode.lua` — `nickjvandyke/opencode.nvim`
+- `lua/plugins/claude-code.lua` — `coder/claudecode.nvim`
+- `lua/plugins/lualine.lua` — lualine override adding `ai:<agent>` indicator
+  and opencode statusline
